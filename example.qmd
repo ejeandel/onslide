@@ -1,0 +1,305 @@
+---
+title: "Onslides"
+format: 
+  revealjs:
+    slide-number: true
+    footer: Onslides
+callout-icon: false
+slide-level: 2
+highlight-style: kate
+filters:
+  - onslide
+---
+
+
+#  Onslides
+
+Onslides is a quarto extension to make reveal animations (fragments) easier to use
+
+# Syntax
+
+```
+:::{.onslide slides="1"}
+text
+:::
+```
+
+will make the text visible on all slides, but highlighted only on slide 1
+
+```
+:::{.onlyslide slides="1"}
+text
+:::
+```
+
+will make the text visible only on slide 1
+
+# Slides Slices
+
+- The argument `slides` can be a slice, for instance:
+  - `slides="1-4"`means on slides 1 to 4.
+  - `slides="2-"` means starting on slide 2
+  - `slides="-2"` means until slide 2
+  
+
+# Caveat
+
+BIG WARNING.
+
+Due to how fragments work, there will be a transition from the last slide you defined to a next slide.
+If you do:
+
+
+```
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="2"}
+text2
+:::
+```
+there will be three slides: one with `text1`, one with `text2`, the other with nothing (see proof on next slide)
+
+# Proof
+
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="2"}
+text2
+:::
+
+# Solution
+
+replace `slides="2"` by `slides="2-"`:
+
+```
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="2-"}
+text2
+:::
+```
+
+Note: `slides="1-"` is not implemented. What is the purpose of using slides if you want something to always appear ?
+
+# Proof
+
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="2-"}
+text2
+:::
+
+
+
+# Some example
+
+Here is some example:
+
+```
+:::{.onslide slides="1-2"}
+text1
+:::
+:::{.onslide slides="3-"}
+text2
+:::
+:::{.onlyslide slides="1"}
+1
+:::
+:::{.onlyslide slides="2"}
+2
+:::
+:::{.onlyslide slides="3-"}
+3
+:::
+```
+
+# Some example
+
+
+:::{.onslide slides="1-2"}
+text1
+:::
+:::{.onslide slides="3-"}
+text2
+:::
+:::{.onlyslide slides="1"}
+1
+:::
+:::{.onlyslide slides="2"}
+2
+:::
+:::{.onlyslide slides="3-"}
+3
+:::
+
+# Spans and divs
+
+
+`onslide` can be used on divs but also on spans:
+
+```
+[1]{.onlyslide slides="1"}
+[2]{.onlyslide slides="2"}
+[3]{.onlyslide slides="3"}
+[4]{.onlyslide slides="4-"}
+monkey[s]{.onlyslide slides="2-"}
+```
+
+
+# Example
+
+[1]{.onlyslide slides="1"}
+[2]{.onlyslide slides="2"}
+[3]{.onlyslide slides="3"}
+[4]{.onlyslide slides="4-"}
+monkey[s]{.onlyslide slides="2-"}
+
+
+# Lists
+
+For lists there are three possibilities
+
+- Use the incremental syntax from pandoc
+
+- Put each element of a list in a div (technically this makes each element of a list its own list, probably not what you want)
+
+- Put each element of a list in a span
+
+
+
+## Incremental lists
+
+```
+:::{.incremental}
+
+- a
+- b
+- c
+
+:::
+```
+
+## Example
+ 
+
+:::{.incremental}
+
+- a
+- b
+- c
+
+:::
+
+## Lists in div
+
+```
+:::{.onslide slides="1"}
+- 1
+:::
+:::{.onslide slides="2"}
+- 2
+:::
+:::{.onslide slides="3-"}
+- 3
+:::
+```
+
+## Lists in div
+
+Notice that the bullet points are slightly sparsed. This is because internally we are doing 3 lists, not just one
+
+:::{.onslide slides="1"}
+- 1
+:::
+:::{.onslide slides="2"}
+- 2
+:::
+:::{.onslide slides="3-"}
+- 3
+:::
+
+## Span in lists
+
+```
+- [1]{.onslide slides="1"}
+- [2]{.onslide slides="2"}
+- [3]{.onslide slides="3-"}
+```
+
+## Span in lists
+
+- [1]{.onslide slides="1"}
+- [2]{.onslide slides="2"}
+- [3]{.onslide slides="3-"}
+
+
+# Gallery
+
+## Gallery
+
+- The value of the expression is [$1 / \sqrt{4}$]{.onlyslide slides="2-"}
+
+
+| a | b                           |
+|---|-----------------------------|
+| 1 | [2]{.onlyslide slides="3-"} |
+| 3 | [4]{.onlyslide slides="4-"} |
+
+
+
+## Gallery
+
+
+::::{.columns}
+::: {.column width="50%"}
+- [a]{.onslide slides="1"}
+- [b]{.onslide slides="2"}
+- [c]{.onslide slides="3-"}
+:::
+
+::: {.column width="50%"}
+- [1]{.onslide slides="1"}
+- [2]{.onslide slides="2"}
+- [3]{.onslide slides="3-"}
+:::
+
+::::
+
+
+
+# Bugs 
+
+## Bugs {.smaller}
+
+Internally, revealjs is not interested in the slide numbers themselves, but their order. So:
+
+
+```
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="5-"}
+text2
+:::
+```
+is equivalent to 
+```
+:::{.onslide slides="1"}
+text1
+:::
+:::{.onslide slides="3-"}
+text2
+:::
+```
+In both cases, you will see three slides: one with text1, one with nothing, one with text2.
+
+While three slides ? Because `slides="n-m"` automatically creates a slide `n - 1`
+
+
+
+
+

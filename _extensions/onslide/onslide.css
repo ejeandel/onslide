@@ -1,0 +1,47 @@
+.reveal .fragment.custom.onlyslide-in {
+    display:none;
+    visibility: inherit;
+}
+
+.reveal .fragment.onlyslide-in.visible {
+    display:inline;
+    opacity: 1;
+    visibility: inherit
+}
+
+
+.reveal .fragment.custom.onlyslide-out {
+    opacity: 1;
+    visibility: inherit
+}
+
+.reveal .fragment.custom.onlyslide-out.visible {
+    visibility: inherit;
+    display:none;
+		
+}
+
+.reveal .fragment.custom.onslide-in {
+    opacity: 0.1;
+    visibility: inherit;
+}
+
+
+.reveal .fragment.onslide-in.visible {
+    opacity: 1;
+    visibility: inherit
+}
+
+
+.reveal .fragment.custom.onslide-out {
+    opacity: 1;
+    visibility: inherit
+}
+
+.reveal .fragment.custom.onslide-out.visible {
+    opacity: 0.1;
+    visibility: inherit
+}
+
+
+
